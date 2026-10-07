@@ -37,4 +37,14 @@ if prompt := st.chat_input("Apna sawal yahan likhein..."):
         with st.chat_message("assistant"):
             try:
                 response = client.chat.completions.create(
-                    model="llama-3.3-70
+                    model="llama-3.3-70b-versatile",
+                    messages=[
+                        {"role": "system", "content": "You are Qanoon Jania, a helpful Legal AI Assistant guiding users about basic legal rights and documents in simple Urdu and English."},
+                        *st.session_state.messages
+                    ]
+                )
+                bot_reply = response.choices[0].message.content
+                st.markdown(bot_reply)
+                st.session_state.messages.append({"role": "assistant", "content": bot_reply})
+            except Exception as e:
+                st.error(f"Error: {e}")
